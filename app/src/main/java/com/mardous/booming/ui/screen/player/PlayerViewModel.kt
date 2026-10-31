@@ -35,6 +35,7 @@ import com.mardous.booming.data.repository.Repository
 import com.mardous.booming.playback.Playback
 import com.mardous.booming.playback.ProgressObserver
 import com.mardous.booming.playback.QueueStateHolder
+import com.mardous.booming.playback.buildPlayableMediaItem
 import com.mardous.booming.playback.shuffle.ShuffleManager
 import com.mardous.booming.util.NOW_PLAYING_EXTRA_INFO
 import com.mardous.booming.util.Preferences
@@ -415,13 +416,15 @@ class PlayerViewModel(
     fun queueNext(song: Song) {
         mediaController?.let { controller ->
             if (controller.currentTimeline.isEmpty) {
-                openQueue(listOf(song), startPlaying = false)
+                controller.setMediaItem(buildPlayableMediaItem(song))
+                controller.playWhenReady = false
+                controller.prepare()
             } else {
                 var nextIndex = position.getIndexForPosition(position.next)
                 if (nextIndex == C.INDEX_UNSET) {
                     nextIndex = controller.mediaItemCount
                 }
-                controller.addMediaItem(nextIndex, song.toMediaItem())
+                controller.addMediaItem(nextIndex, buildPlayableMediaItem(song))
             }
         }
     }
@@ -447,9 +450,9 @@ class PlayerViewModel(
             } else {
                 val toIndex = position.getIndexForPosition(toPosition)
                 if (toPosition >= 0 && toIndex >= 0) {
-                    controller.addMediaItem(toIndex, song.toMediaItem())
+                    controller.addMediaItem(toIndex, buildPlayableMediaItem(song))
                 } else {
-                    controller.addMediaItem(song.toMediaItem())
+                    controller.addMediaItem(buildPlayableMediaItem(song))
                 }
             }
         }

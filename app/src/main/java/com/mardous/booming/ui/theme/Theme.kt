@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.colorResource
 import com.mardous.booming.R
 import com.mardous.booming.core.model.player.PlayerColorScheme
@@ -95,13 +96,18 @@ private val darkScheme = darkColorScheme(
 @Composable
 fun BoomingMusicTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    blackTheme: Boolean = Preferences.blackTheme,
-    dynamicColor: Boolean = Preferences.isMaterialYouTheme,
-    customFont: Boolean = Preferences.isCustomFont,
+    blackTheme: Boolean? = null,
+    dynamicColor: Boolean? = null,
+    customFont: Boolean? = null,
     content: @Composable () -> Unit
 ) {
+    val inPreview = LocalInspectionMode.current
+    val isBlackTheme = blackTheme ?: if (inPreview) false else Preferences.blackTheme
+    val isDynamicColor = dynamicColor ?: if (inPreview) false else Preferences.isMaterialYouTheme
+    val isCustomFont = customFont ?: if (inPreview) true else Preferences.isCustomFont
+
     var colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
@@ -110,7 +116,7 @@ fun BoomingMusicTheme(
         else -> lightScheme
     }
 
-    if (darkTheme && blackTheme) {
+    if (darkTheme && isBlackTheme) {
         colorScheme = colorScheme.copy(
             background = Color.Black,
             surface = Color.Black,
@@ -122,7 +128,7 @@ fun BoomingMusicTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = if (customFont) customTypography else defaultTypography,
+        typography = if (isCustomFont) customTypography else defaultTypography,
         content = content
     )
 }

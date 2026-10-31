@@ -176,6 +176,8 @@ class PlaybackService :
     private var hasSetUnshuffledOrder = false
     private var stopIndex = -1
     private var prefetchGainJob: Job? = null
+    private var lastMediaItemId: String? = null
+    private var lastMediaItemIndex = C.INDEX_UNSET
 
     private var headsetClickCount = 0
     private val headsetClickRunnable = Runnable {
@@ -761,6 +763,19 @@ class PlaybackService :
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        val previousMediaItemId = lastMediaItemId
+        val previousMediaItemIndex = lastMediaItemIndex
+        lastMediaItemId = mediaItem?.mediaId
+        lastMediaItemIndex = player.currentMediaItemIndex
+        if (mediaItem != null && previousMediaItemId != null &&
+            (previousMediaItemId != mediaItem.mediaId ||
+                previousMediaItemIndex != player.currentMediaItemIndex) &&
+            player.repeatMode == Player.REPEAT_MODE_ONE &&
+            Preferences.resetRepeatOneOnSongChange
+        ) {
+            player.repeatMode = Player.REPEAT_MODE_ALL
+        }
+
         val isPlaying = player.isPlaying
         if (replayGainProcessor.mode.isOn) submitReplayGain(mediaItem)
 

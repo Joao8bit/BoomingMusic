@@ -251,7 +251,8 @@ androidComponents {
         variant.outputs.forEach { output ->
             val filter = output.filters.joinToString("-") { it.identifier }
             val abi = filter.ifEmpty { "universal" }
-            output.outputFileName = "BoomingMusic-${output.versionName.get()}-${variant.flavorName}-$abi.apk"
+            val buildTypeName = variant.buildType ?: "build"
+            output.outputFileName = "BoomingMusic-${output.versionName.get()}-${variant.flavorName}-$abi-$buildTypeName.apk"
         }
     }
 }

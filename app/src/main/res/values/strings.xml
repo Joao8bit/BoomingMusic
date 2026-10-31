@@ -737,6 +737,8 @@
     <string name="widget_source_recent">Recent</string>
     <string name="widget_page_previous">Previous songs</string>
     <string name="widget_page_next">Next songs</string>
+    <string name="lyrics_keep_visible_title">Keep lyrics visible</string>
+    <string name="lyrics_keep_visible_summary">Keep lyrics shown when changing songs or reopening the player. When off, lyrics only appear after you tap the lyrics button.</string>
     <string name="lyrics_center_current_line_title">Center current line</string>
     <string name="lyrics_center_current_line_summary">Keep the current lyric line centered on screen instead of aligned to the top.</string>
     <string name="lyrics_center_horizontally_title">Center lyrics horizontally</string>
@@ -845,6 +847,8 @@
     <string name="queue_next_mode_title">\"Queue next\" mode</string>
     <string name="remember_shuffle_mode_title">Remember Shuffle</string>
     <string name="remember_shuffle_mode_summary">Shuffle mode will stay on when selecting a new list of songs.</string>
+    <string name="reset_repeat_one_on_song_change_title">Reset repeat-one on song change</string>
+    <string name="reset_repeat_one_on_song_change_summary">When repeating a single song, switching to another song or queue position switches back to repeating the whole queue.</string>
     <string name="album_shuffle_mode_title">Album shuffle mode</string>
     <string name="artist_shuffle_mode_title">Artist shuffle mode</string>
     <string name="rewind_with_back_title">"Rewind with 'Previous'"</string>
@@ -871,6 +875,8 @@
     <string name="play_option_always_visible_summary">If enabled, the \"Play\" option will always appear in a song\'s menu, regardless of tap behavior settings.</string>
     <string name="play_option_whole_list_title">"Play" option plays whole list</string>
     <string name="play_option_whole_list_summary">If enabled, selecting \"Play\" from a song\'s menu will start playback of the entire playlist. If disabled, only the chosen song will play.</string>
+    <string name="swipe_to_play_next_title">Swipe song to play next</string>
+    <string name="swipe_to_play_next_summary">If enabled, swiping a song right in lists adds it to Play Next.</string>
     <string name="on_song_click_title">When selecting a song</string>
     <string name="on_song_click_play_only_this_song_title">Play only this song</string>
     <string name="on_song_click_play_only_this_song_summary">The current queue will be cleared and replaced with the selected song.</string>

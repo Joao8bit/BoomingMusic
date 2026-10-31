@@ -4,6 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
+        app:icon="@drawable/ic_lyrics_outline_24dp"
+        app:title="@string/lyrics_keep_visible_title"
+        app:summary="@string/lyrics_keep_visible_summary"
+        app:defaultValue="false"
+        app:layout="@layout/list_item_view"
+        app:widgetLayout="@layout/preference_switch"
+        app:key="keep_lyrics_visible" />
+
+    <SwitchPreferenceCompat
         app:icon="@drawable/ic_match_word_24dp"
         app:title="@string/lyrics_syllable_mode_title"
         app:summary="@string/lyrics_syllable_mode_summary"

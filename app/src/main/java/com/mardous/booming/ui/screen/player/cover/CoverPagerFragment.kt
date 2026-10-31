@@ -92,10 +92,12 @@ class CoverPagerFragment : Fragment(R.layout.fragment_player_album_cover),
     private var callbacks: Callbacks? = null
 
     private var currentPosition = 0
+    private var lastSongId = Song.emptySong.id
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlayerAlbumCoverBinding.bind(view)
+        lastSongId = playerViewModel.currentSong.id
         coverLyricsFragment =
             childFragmentManager.findFragmentById(R.id.coverLyricsFragment) as? CoverLyricsFragment
         navController = findActivityNavController(R.id.fragment_container)
@@ -189,6 +191,16 @@ class CoverPagerFragment : Fragment(R.layout.fragment_player_album_cover),
                 activity?.keepScreenOn(isShowLyricsOnCover && isLyricsViewVisible)
             }
         }
+        viewLifecycleOwner.launchAndRepeatWithViewLifecycle {
+            playerViewModel.currentSongFlow.collect { song ->
+                if (lastSongId != Song.emptySong.id && song.id != lastSongId &&
+                    !Preferences.keepLyricsVisible
+                ) {
+                    resetLyricsVisibility()
+                }
+                lastSongId = song.id
+            }
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
@@ -230,16 +242,30 @@ class CoverPagerFragment : Fragment(R.layout.fragment_player_album_cover),
 
     fun toggleLyrics() {
         if (isAnimatingLyrics) return
-        if (isShowLyricsOnCover) {
+        if (isLyricsViewVisible) {
             hideLyrics(true)
         } else {
             showLyrics(true)
         }
     }
 
+    /**
+     * Hides the lyrics and forgets that they were visible, so the cover is shown again the
+     * next time the player is opened or the song changes.
+     */
+    fun resetLyricsVisibility() {
+        if (!isShowLyricsOnCover) return
+        if (isLyricsViewVisible) {
+            hideLyrics(true)
+        } else {
+            isShowLyricsOnCover = false
+        }
+    }
+
     fun showLyrics(isForced: Boolean = false) {
-        if (!isAllowedToLoadLyrics || (!isShowLyricsOnCover && !isForced) || isAnimatingLyrics)
-            return
+        if (!isAllowedToLoadLyrics || (!isForced && !Preferences.keepLyricsVisible) ||
+            (!isShowLyricsOnCover && !isForced) || isAnimatingLyrics
+        ) return
 
         isAnimatingLyrics = true
 

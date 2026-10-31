@@ -192,11 +192,18 @@ object Preferences : KoinComponent {
         get() = preferences.getBoolean(LYRICS_ON_COVER, false)
         set(value) = preferences.edit { putBoolean(LYRICS_ON_COVER, value) }
 
+    val keepLyricsVisible: Boolean
+        get() = preferences.getBoolean(KEEP_LYRICS_VISIBLE, false)
+
     val swipeOnCover: Boolean
         get() = preferences.getBoolean(SWIPE_ON_COVER, true)
 
     val miniPlayerSwipeToSkip: Boolean
         get() = preferences.getBoolean(MINI_PLAYER_SWIPE_TO_SKIP, true)
+
+    var swipeToPlayNext: Boolean
+        get() = preferences.getBoolean(SWIPE_TO_PLAY_NEXT, true)
+        set(value) = preferences.edit { putBoolean(SWIPE_TO_PLAY_NEXT, value) }
 
     fun getNowPlayingColorSchemeKey(nps: NowPlayingScreen) =
         "player_${nps.name.lowercase()}_color_scheme"
@@ -325,6 +332,9 @@ object Preferences : KoinComponent {
 
     val playAllSongsWhenSearching: Boolean
         get() = preferences.getBoolean(PLAY_ALL_SONGS_WHEN_SEARCHING, false)
+
+    val resetRepeatOneOnSongChange: Boolean
+        get() = preferences.getBoolean(RESET_REPEAT_ONE_ON_SONG_CHANGE, true)
 
     val albumShuffleMode: GroupShuffleMode
         get() = getGroupShuffleMode(ALBUM_SHUFFLE_MODE, SelectedShuffleMode.SHUFFLE_ALBUMS)
@@ -562,8 +572,10 @@ const val ADAPTIVE_CONTROLS = "adaptive_controls"
 const val SQUIGGLY_SEEK_BAR = "squiggly_seek_bar"
 const val SWIPE_DOWN_TO_DISMISS = "swipe_down_to_dismiss"
 const val LYRICS_ON_COVER = "lyrics_on_cover"
+const val KEEP_LYRICS_VISIBLE = "keep_lyrics_visible"
 const val SWIPE_ON_COVER = "swipe_on_cover"
 const val MINI_PLAYER_SWIPE_TO_SKIP = "mini_player_swipe_to_skip"
+const val SWIPE_TO_PLAY_NEXT = "swipe_to_play_next"
 const val NOW_PLAYING_SMALL_IMAGE = "now_playing_small_image"
 const val NOW_PLAYING_IMAGE_CORNER_RADIUS = "now_playing_corner_radius"
 const val PLAYER_BLUR_RADIUS = "player_blur_radius"
@@ -592,6 +604,7 @@ const val PLAY_OPTION_PLAYS_WHOLE_LIST = "play_option_whole_list"
 const val PLAY_ALL_SONGS_WHEN_SEARCHING = "play_all_songs_when_searching"
 const val CLEAR_QUEUE_ON_COMPLETION = "clear_queue_on_completion"
 const val REMEMBER_SHUFFLE_MODE = "remember_shuffle_mode"
+const val RESET_REPEAT_ONE_ON_SONG_CHANGE = "reset_repeat_one_on_song_change"
 const val ALBUM_SHUFFLE_MODE = "album_shuffle_mode"
 const val ARTIST_SHUFFLE_MODE = "artist_shuffle_mode"
 const val RESUME_ON_CONNECT = "resume_on_connect"

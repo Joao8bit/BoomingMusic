@@ -62,6 +62,15 @@
             app:key="play_option_whole_list"/>
 
         <SwitchPreferenceCompat
+            app:icon="@drawable/ic_queue_play_next_24dp"
+            app:title="@string/swipe_to_play_next_title"
+            app:summary="@string/swipe_to_play_next_summary"
+            app:defaultValue="true"
+            app:layout="@layout/list_item_view"
+            app:widgetLayout="@layout/preference_switch"
+            app:key="swipe_to_play_next"/>
+
+        <SwitchPreferenceCompat
             app:icon="@drawable/ic_search_24dp"
             app:title="@string/play_all_songs_when_searching_title"
             app:summary="@string/play_all_songs_when_searching_summary"
@@ -140,6 +149,15 @@
             app:layout="@layout/list_item_view_bottom_widget"
             app:widgetLayout="@layout/preference_seekbar"
             app:key="seek_interval"/>
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_repeat_one_24dp"
+            app:title="@string/reset_repeat_one_on_song_change_title"
+            app:summary="@string/reset_repeat_one_on_song_change_summary"
+            app:defaultValue="true"
+            app:layout="@layout/list_item_view"
+            app:widgetLayout="@layout/preference_switch"
+            app:key="reset_repeat_one_on_song_change"/>
 
     </PreferenceCategory>
 

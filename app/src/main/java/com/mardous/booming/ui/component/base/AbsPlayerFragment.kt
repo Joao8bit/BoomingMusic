@@ -541,7 +541,11 @@ abstract class AbsPlayerFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes
 
     @CallSuper
     open fun onHide() {
-        coverFragment?.hideLyrics()
+        if (Preferences.keepLyricsVisible) {
+            coverFragment?.hideLyrics()
+        } else {
+            coverFragment?.resetLyricsVisibility()
+        }
         playerControlsFragment.onHide()
     }
 

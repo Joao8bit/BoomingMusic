@@ -276,7 +276,9 @@ open class SongAdapter(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder
         ): Int {
-            return if (Preferences.swipeToPlayNext && !isInQuickSelectMode) {
+            val hasCurrentSong =
+                activity.getViewModel<PlayerViewModel>().currentSong != Song.emptySong
+            return if (Preferences.swipeToPlayNext && !isInQuickSelectMode && hasCurrentSong) {
                 super.getMovementFlags(recyclerView, viewHolder)
             } else {
                 0
@@ -330,10 +332,12 @@ open class SongAdapter(
         }
 
         private fun addToPlayNext(viewHolder: RecyclerView.ViewHolder) {
+            val playerViewModel = activity.getViewModel<PlayerViewModel>()
+            if (playerViewModel.currentSong == Song.emptySong) return
             val position = viewHolder.bindingAdapterPosition
             val song = dataSet.getOrNull(position)?.takeUnless { it == Song.emptySong || it.id < 0 }
                 ?: return
-            activity.getViewModel<PlayerViewModel>().queueNext(song)
+            playerViewModel.queueNext(song)
             activity.showToast(R.string.added_title_to_playing_queue)
         }
 

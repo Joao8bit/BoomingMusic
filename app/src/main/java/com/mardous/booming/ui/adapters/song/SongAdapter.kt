@@ -389,12 +389,29 @@ open class SongAdapter(
                 canvas.drawRect(background, backgroundPaint)
 
                 playNextIcon?.let { icon ->
-                    val iconLeft = if (clampedDx > 0f) {
-                        itemView.left + iconMargin
+                    val swipeDirection = if (clampedDx > 0f) 1f else -1f
+                    val initialIconCenterX = if (swipeDirection > 0f) {
+                        itemView.left + iconMargin + iconSize / 2f
                     } else {
-                        itemView.right - iconMargin - iconSize
+                        itemView.right - iconMargin - iconSize / 2f
                     }
+                    val swipeCenterX = if (swipeDirection > 0f) {
+                        itemView.left + clampedDx / 2f
+                    } else {
+                        itemView.right + clampedDx / 2f
+                    }
+                    // Stay at the initial position until the revealed area reaches it, then
+                    // follow the center of the swipe instead of stretching from the edge.
+                    val iconCenterX = if (swipeDirection > 0f) {
+                        maxOf(initialIconCenterX, swipeCenterX)
+                    } else {
+                        minOf(initialIconCenterX, swipeCenterX)
+                    }
+                    val iconLeft = (iconCenterX - iconSize / 2f).toInt()
                     val iconTop = itemView.top + (itemView.height - iconSize) / 2
+                    val fadeDistance = (currentMaxSwipeDistance - iconMargin).coerceAtLeast(1f)
+                    icon.alpha = (((abs(clampedDx) - iconMargin) / fadeDistance) * 255)
+                        .toInt().coerceIn(0, 255)
                     icon.setBounds(iconLeft, iconTop, iconLeft + iconSize, iconTop + iconSize)
                     icon.draw(canvas)
                 }
